@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NeuroHome · Kit Composition · v0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-card: #f8f9fb;
+  --bg-card-hover: #f1f3f7;
+  --bg-elevated: #f0f2f6;
+  --bg-deep: #fafbfd;
+  --border: #e2e5eb;
+  --border-strong: #cdd2db;
+  --text-primary: #1a1d23;
+  --text-secondary: #5a6270;
+  --text-muted: #8891a0;
+  --accent: #0891b2;
+  --gold: #d97706;
+  --warn-bg: #fef3c7;
+  --warn-border: #fbbf24;
+  --warn-ink: #92400e;
+  --info-bg: #ecfeff;
+  --info-border: #67e8f9;
+  --info-ink: #155e75;
+  /* Profile colors */
+  --prof-a: #16a34a;
+  --prof-b: #9333ea;
+  --prof-c: #d97706;
+  --prof-d: #2563eb;
+  --prof-e: #ea580c;
+  --prof-f: #be123c;
+  /* Kit category colors */
+  --cat-foundational: #0891b2;
+  --cat-addon: #d97706;
+  --cat-upgrade: #6366f1;
+  --cat-adjacent: #64748b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+.topnav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; }
+.topnav-brand { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+.topnav-brand span { color: var(--accent); }
+.topnav-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.02em; }
+
+.layout { display: grid; grid-template-columns: 240px 1fr; max-width: 1400px; margin: 0 auto; }
+.sidenav { position: sticky; top: 60px; height: calc(100vh - 60px); padding: 32px 20px 32px 32px; overflow-y: auto; border-right: 1px solid var(--border); }
+.sidenav-section { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 24px 0 8px; padding-bottom: 4px; border-bottom: 1px dashed var(--border); }
+.sidenav-section:first-child { margin-top: 0; }
+.sidenav a { display: block; padding: 6px 10px; font-size: 12.5px; color: var(--text-secondary); text-decoration: none; border-radius: 4px; transition: all 0.15s ease; }
+.sidenav a:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.sidenav a.active { background: var(--bg-elevated); color: var(--accent); font-weight: 500; }
+
+main { padding: 48px 56px 96px; max-width: 1100px; }
+.section { margin-bottom: 72px; scroll-margin-top: 80px; }
+.section-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 8px; text-transform: uppercase; }
+.section h1 { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 12px; }
+.section h1 .accent { color: var(--accent); font-style: italic; font-weight: 500; }
+.section h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; line-height: 1.2; margin: 36px 0 12px; }
+.section h3 { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+.section p { color: var(--text-secondary); font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+.section p.lead { color: var(--text-primary); font-size: 19px; line-height: 1.55; margin-bottom: 24px; font-weight: 400; }
+.section ul, .section ol { color: var(--text-secondary); padding-left: 22px; margin-bottom: 12px; }
+.section li { margin-bottom: 4px; line-height: 1.65; }
+.section strong { color: var(--text-primary); font-weight: 600; }
+
+.cover { padding: 64px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; }
+.confidential { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; background: var(--warn-bg); color: var(--warn-ink); border: 1px solid var(--warn-border); border-radius: 3px; margin-bottom: 24px; }
+.cover-mark { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); margin-bottom: 8px; letter-spacing: 0.04em; }
+.cover-title { font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 600; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 14px; }
+.cover-title em { color: var(--accent); font-weight: 500; }
+.cover-sub { font-size: 21px; color: var(--text-secondary); line-height: 1.5; max-width: 760px; margin-bottom: 40px; }
+.cover-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; border-top: 1px solid var(--border); padding-top: 24px; }
+.cover-meta-item { display: flex; flex-direction: column; gap: 6px; }
+.cover-meta-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.cover-meta-value { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+
+.core-idea { background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%); border: 1px solid var(--border-strong); border-radius: 8px; padding: 32px 36px; margin: 32px 0; position: relative; overflow: hidden; }
+.core-idea::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--accent); }
+.core-idea-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.core-idea h2 { font-family: 'Playfair Display', serif; font-size: 26px; margin: 0 0 14px; font-weight: 500; }
+.core-idea p { color: var(--text-primary); font-size: 16px; line-height: 1.6; margin-bottom: 12px; }
+.core-idea p:last-child { margin-bottom: 0; }
+
+.warn-box { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 6px; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: var(--warn-ink); line-height: 1.55; }
+.warn-box strong { color: var(--warn-ink); }
+.info-box { background: var(--info-bg); border: 1px solid var(--info-border); border-radius: 6px; padding: 16px 20px; margin: 20px 0; font-size: 14px; color: var(--info-ink); line-height: 1.55; }
+.info-box strong { color: var(--info-ink); }
+
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+.stat-card { padding: 18px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 500; color: var(--accent); line-height: 1; }
+.stat-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+.stat-desc { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* Item cards (foundational + add-ons + upgrades) */
+.item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.item-card { padding: 22px 26px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; position: relative; }
+.item-card.foundational { border-top: 4px solid var(--cat-foundational); }
+.item-card.addon { border-top: 4px solid var(--cat-addon); }
+.item-card.upgrade { border-top: 4px solid var(--cat-upgrade); }
+.item-card.adjacent { border-top: 4px solid var(--cat-adjacent); }
+.item-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: baseline; }
+.item-card.foundational .item-cat .price { color: var(--cat-foundational); font-weight: 600; }
+.item-card.addon .item-cat .price { color: var(--cat-addon); font-weight: 600; }
+.item-card.upgrade .item-cat .price { color: var(--cat-upgrade); font-weight: 600; }
+.item-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; margin: 0 0 4px; }
+.item-purpose { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--border); }
+.item-row { display: grid; grid-template-columns: 80px 1fr; gap: 12px; padding: 5px 0; }
+.item-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); padding-top: 2px; }
+.item-content { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.item-content strong { color: var(--text-primary); }
+.item-flag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; margin-left: 6px; }
+.item-flag.tbd { background: var(--warn-bg); color: var(--warn-ink); border: 1px solid var(--warn-border); }
+.item-flag.new { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+
+/* Pricing table */
+.pricing-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px; }
+.pricing-table th, .pricing-table td { padding: 12px 16px; border: 1px solid var(--border); text-align: left; vertical-align: middle; }
+.pricing-table th { background: var(--bg-elevated); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.pricing-table td.num { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.pricing-table td.item-name-cell { font-weight: 500; color: var(--text-primary); }
+.pricing-table tr.total td { background: var(--bg-elevated); font-weight: 600; color: var(--text-primary); border-top: 2px solid var(--border-strong); }
+.pricing-table tr.total td.num { color: var(--accent); }
+.pricing-table tr.subtotal td { background: var(--bg-deep); font-style: italic; color: var(--text-secondary); }
+.pricing-table .cell-tbd { color: var(--text-muted); font-style: italic; }
+
+/* Profile × Kit matrix */
+.matrix-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+.matrix-table th, .matrix-table td { padding: 14px 16px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+.matrix-table th { background: var(--bg-elevated); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.matrix-table td.profile-cell { font-weight: 600; background: var(--bg-deep); white-space: nowrap; min-width: 110px; }
+.matrix-table td.profile-cell.A { color: var(--prof-a); border-left: 3px solid var(--prof-a); }
+.matrix-table td.profile-cell.B { color: var(--prof-b); border-left: 3px solid var(--prof-b); }
+.matrix-table td.profile-cell.C { color: var(--prof-c); border-left: 3px solid var(--prof-c); }
+.matrix-table td.profile-cell.D { color: var(--prof-d); border-left: 3px solid var(--prof-d); }
+.matrix-table td.profile-cell.E { color: var(--prof-e); border-left: 3px solid var(--prof-e); }
+.matrix-table td.profile-cell.F { color: var(--prof-f); border-left: 3px solid var(--prof-f); }
+.matrix-table td.tbd-cell { color: var(--text-muted); font-style: italic; }
+
+/* Decision items */
+.decision-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+.decision-item { padding: 14px 18px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+.decision-item strong { color: var(--text-primary); }
+
+.gap-item { padding: 14px 18px; background: var(--warn-bg); border: 1px solid var(--warn-border); border-left: 3px solid var(--gold); border-radius: 4px; font-size: 13.5px; color: var(--warn-ink); line-height: 1.55; margin-bottom: 8px; }
+.gap-item strong { color: var(--warn-ink); }
+
+/* Pivot list */
+.pivot-list { display: flex; flex-direction: column; gap: 10px; margin: 18px 0; }
+.pivot-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 14px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+.pivot-from { color: var(--text-muted); text-decoration: line-through; }
+.pivot-arrow { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 600; }
+.pivot-to { color: var(--text-primary); font-weight: 500; }
+
+/* Comparison side-by-side */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.compare-col { padding: 24px 26px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
+.compare-col.old { border-top: 4px solid var(--text-muted); }
+.compare-col.new { border-top: 4px solid var(--accent); }
+.compare-mark { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.compare-col.new .compare-mark { color: var(--accent); }
+.compare-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--border); }
+.compare-line { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; color: var(--text-secondary); border-bottom: 1px dotted var(--border); gap: 8px; }
+.compare-line:last-of-type { border-bottom: none; }
+.compare-line .label { color: var(--text-secondary); }
+.compare-line .val { font-family: 'JetBrains Mono', monospace; color: var(--text-primary); white-space: nowrap; font-weight: 500; }
+.compare-col.old .compare-line .val { color: var(--text-muted); }
+.compare-section { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin: 14px 0 6px; padding-top: 10px; border-top: 1px solid var(--border); }
+.compare-section:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+.compare-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-strong); display: flex; justify-content: space-between; font-size: 13px; }
+.compare-foot .label { color: var(--text-primary); font-weight: 600; }
+.compare-foot .val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+.compare-col.old .compare-foot .val { color: var(--text-secondary); }
+.compare-col.new .compare-foot .val { color: var(--accent); }
+
+@media (max-width: 980px) {
+  .compare-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidenav { display: none; }
+  main { padding: 32px 20px 64px; }
+  .cover-title { font-size: 40px; }
+  .cover-meta, .stats-grid, .item-grid { grid-template-columns: 1fr 1fr; }
+  .pivot-row { grid-template-columns: 1fr; gap: 4px; text-align: left; }
+  .pivot-arrow { display: none; }
+}
+@media print {
+  .topnav, .sidenav { display: none; }
+  .layout { grid-template-columns: 1fr; }
+  main { padding: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-brand">Neuro<span>Home</span></div>
+  <div class="topnav-meta">Kit Composition · Internal · v0.3 (May 3, 2026 — trimmed to core 6)</div>
+</nav>
+
+<div class="layout">
+
+<aside class="sidenav">
+  <div class="sidenav-section">Foundation</div>
+  <a href="#cover">Overview</a>
+  <a href="#pivot">§1 · The Pivot</a>
+  <div class="sidenav-section">The Kit</div>
+  <a href="#foundational">§2 · Foundational</a>
+  <a href="#labs">§3 · Labs</a>
+  <a href="#addons">§4 · Add-ons</a>
+  <a href="#matrix">§5 · Profile × Kit</a>
+  <a href="#upgrades">§6 · Premium Upgrades</a>
+</aside>
+
+<main>
+
+<section class="cover" id="cover">
+  <div class="confidential">Internal · NeuroHome Lane 3 (Kit + Devices)</div>
+  <div class="cover-mark">v0.3 — trimmed to core kit + labs</div>
+  <h1 class="cover-title">Kit <em>Composition</em></h1>
+  <p class="cover-sub">What's in the box, what's a clinician add-on, what's a parent-certified upgrade. Plus the labs that ship with every paid tier.</p>
+
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Version</div>
+      <div class="cover-meta-value">v0.3 — May 3, 2026</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Replaces</div>
+      <div class="cover-meta-value">Kit lines in Discovery SOP v0.1</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Sources</div>
+      <div class="cover-meta-value">Kyle May 2 review · Cohort (n=23) · Equipment + lab pricing</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Next doc</div>
+      <div class="cover-meta-value">Pricing tier rework (v0.6)</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pivot">
+  <div class="section-tag">§1 · The Pivot</div>
+  <h1>What changed <span class="accent">May 2</span></h1>
+  <p class="lead">Five shifts in the kit architecture, four from Kyle's May 2 review and one (Rezzimax → optional upgrade) added in this build. All flow from one decision: get the Class 3B medical laser out of the foundational kit and replace it with something a parent can safely operate without certification.</p>
+
+  <div class="pivot-list">
+    <div class="pivot-row">
+      <div class="pivot-from">Class 3B medical laser leased to family ($8,000-class device)</div>
+      <div class="pivot-arrow">→</div>
+      <div class="pivot-to">LED Laser NSH ($300 cost / $1,100 sold) as foundational anchor</div>
+    </div>
+    <div class="pivot-row">
+      <div class="pivot-from">Class 3B included in all paid tiers by default</div>
+      <div class="pivot-arrow">→</div>
+      <div class="pivot-to">Class 3B as parent-certified upgrade, available at any tier</div>
+    </div>
+    <div class="pivot-row">
+      <div class="pivot-from">Saebo TENS as clinician-prescribed add-on</div>
+      <div class="pivot-arrow">→</div>
+      <div class="pivot-to">SaeboStim Pro 4-in-1 ($279) graduates to foundational</div>
+    </div>
+    <div class="pivot-row">
+      <div class="pivot-from">Rezzimax in foundational kit (every paid tier got one)</div>
+      <div class="pivot-arrow">→</div>
+      <div class="pivot-to">Rezzimax becomes optional upgrade — Saebo 4-in-1 covers most universal use</div>
+    </div>
+    <div class="pivot-row">
+      <div class="pivot-from">qEEG only as in-clinic intensive offering</div>
+      <div class="pivot-arrow">→</div>
+      <div class="pivot-to">qEEG enters as premium leased home offering</div>
+    </div>
+  </div>
+
+  <div class="core-idea">
+    <div class="core-idea-label">The new architecture in one line</div>
+    <h2>Foundational kit → clinician add-ons → parent-certified upgrades</h2>
+    <p>Every paid tier gets the same foundational kit. The protocol prescribed on top of that kit is what differs by profile and intensity (see Profile + Intensity Map v0.2). Add-on devices are pulled from a defined library when the case calls for them. The Class 3B laser and qEEG sit in a separate upgrade tier any family can opt into with parent certification.</p>
+    <p>This is what the v0.5 protocol always said about delivery — <em>same starting point, personalized progression, tiered support</em>. The kit just got cleaner.</p>
+  </div>
+
+  <div class="info-box">
+    <strong>Why this matters for liability and scaling.</strong> A $300 LED laser parents can use without certification removes the largest single regulatory and operational drag on scaling NeuroHome to 50+ families. Class 3B stays available — but as an opt-in with explicit parent training and documented certification, not the default.
+  </div>
+</section>
+
+<section class="section" id="foundational">
+  <div class="section-tag">§2 · The Box Every Family Gets</div>
+  <h1>The <span class="accent">foundational kit</span></h1>
+  <p class="lead">Seven items. Universal across every paid tier. Designed to deliver the bottom-up neurological stack — vagus regulation via Saebo, cranial nerve work, primitive reflex integration, hemispheric sensory pairing, photobiomodulation — without requiring parent certification on any single device.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Items in foundational kit</div><div class="stat-desc">Same box for A through F</div></div>
+    <div class="stat-card"><div class="stat-num">~$984</div><div class="stat-label">Estimated kit COGS</div><div class="stat-desc">±$50 pending Saebo + small-item confirms</div></div>
+    <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Parent certifications required</div><div class="stat-desc">Class 1 / eye-safe across the kit</div></div>
+    <div class="stat-card"><div class="stat-num">TBD</div><div class="stat-label">Bundle price</div><div class="stat-desc">Set in pricing tier rework (v0.6)</div></div>
+  </div>
+
+  <h2>The seven items</h2>
+
+  <div class="item-grid">
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Photobiomodulation</span><span class="price">$199 → $750</span></div>
+      <div class="item-name">LED Light Panel <span class="item-flag new">New foundational</span></div>
+      <div class="item-purpose">Frequency-tunable light panel (4 / 6 / 8 / 10 / 20 / 30 / 31 / 40 Hz). Used for full-brain stimulation and entrainment work in the cohort prescriptions.</div>
+      <div class="item-row"><div class="item-label">Cost</div><div class="item-content"><strong>$199</strong> wholesale to clinic</div></div>
+      <div class="item-row"><div class="item-label">Sold</div><div class="item-content"><strong>$750</strong> retail to family (3.8× markup)</div></div>
+      <div class="item-row"><div class="item-label">Role</div><div class="item-content">Hemispheric and frequency-band photobiomodulation. Foundational protocol element across all profiles.</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">Block Blue Light (Kyle's affiliate channel)</div></div>
+    </div>
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Laser</span><span class="price">$300 → $1,100</span></div>
+      <div class="item-name">LED Laser NSH <span class="item-flag new">Replaces Class 3B</span></div>
+      <div class="item-purpose">The new foundational laser. Replaces the Class 3B as the anchor device. Eye-safe, no certification required — parent can apply directly to vagus, cerebellum, spinal pathways, abdomen.</div>
+      <div class="item-row"><div class="item-label">Cost</div><div class="item-content"><strong>$300</strong> wholesale to clinic</div></div>
+      <div class="item-row"><div class="item-label">Sold</div><div class="item-content"><strong>$1,100</strong> retail to family (3.7× markup)</div></div>
+      <div class="item-row"><div class="item-label">Role</div><div class="item-content">All standard laser placements: vagus L/R, cerebellum L/R, spinal pathway, abdomen, Dr. Daigle face/all, brainwave settings.</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">Neuro-Solution custom (info@neuro-solution.com — ask for Jill)</div></div>
+    </div>
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Neuromuscular Estim</span><span class="price">$279 cost</span></div>
+      <div class="item-name">SaeboStim Pro 4-in-1 <span class="item-flag new">Graduates to foundational</span></div>
+      <div class="item-purpose">Universal in cohort prescriptions — used on face, tongue, paraspinal, ST36/SP6 acupressure, trigeminal/vagus placements. Now confirmed foundational across all profiles.</div>
+      <div class="item-row"><div class="item-label">Cost</div><div class="item-content"><strong>$279</strong> wholesale to clinic</div></div>
+      <div class="item-row"><div class="item-label">Sold</div><div class="item-content"><span class="cell-tbd">retail TBD with Kyle</span> — older Saebo Tens unit listed at $350 retail, expect 4-in-1 above that</div></div>
+      <div class="item-row"><div class="item-label">Role</div><div class="item-content">Cranial nerve / face stim, body / paraspinal stim, acupressure point stim. Replaces the older Saebo TENS unit in the kit.</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">saebo.com (1.25" face electrodes + 2×3.5" body electrodes both required)</div></div>
+    </div>
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Sensory · Vision</span><span class="price">$195 → $225</span></div>
+      <div class="item-name">Blue Glasses with Eye Lights</div>
+      <div class="item-purpose">Right-brain visual stimulation — used in pairing with rhythmic music to left ear, peppermint to right nostril, and TENS on left side of body. Eye-light variant preferred over basic blue glasses for cohort cases requiring intensive hemispheric stim.</div>
+      <div class="item-row"><div class="item-label">Cost</div><div class="item-content"><strong>$195</strong> wholesale</div></div>
+      <div class="item-row"><div class="item-label">Sold</div><div class="item-content"><strong>$225</strong> retail (note: thin margin — confirm with Kyle whether intentional)</div></div>
+      <div class="item-row"><div class="item-label">Alternative</div><div class="item-content">Basic blue glasses ($14 Amazon) for budget-constrained families or as backup pair</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">Block Blue Light (eye-light version)</div></div>
+    </div>
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Sensory · Olfactory</span><span class="price">$12 retail</span></div>
+      <div class="item-name">Essential Oils Kit</div>
+      <div class="item-purpose">Rosemary (left nostril → left brain), peppermint / eucalyptus / frankincense (right nostril → right brain). Applied 4–5× daily on shirt collar plus direct sniff during exercises.</div>
+      <div class="item-row"><div class="item-label">Sold</div><div class="item-content"><strong>$12</strong> retail (per existing equipment pricing doc)</div></div>
+      <div class="item-row"><div class="item-label">Role</div><div class="item-content">Olfactory-driven hemispheric activation. Cheapest, most consistent sensory channel in the protocol.</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">In-clinic supply</div></div>
+    </div>
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Acupressure</span><span class="price">~$10 retail</span></div>
+      <div class="item-name">Shen Men Beads</div>
+      <div class="item-purpose">Auricular acupressure — Shen Men point both ears, applied before and after therapy sessions. Universal across cohort prescriptions.</div>
+      <div class="item-row"><div class="item-label">Sold</div><div class="item-content">Parent-sourced via Amazon (~$10–15 / pack)</div></div>
+      <div class="item-row"><div class="item-label">Role</div><div class="item-content">Pre/post-session ear acupressure to support autonomic regulation.</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">Amazon (Dragon Acupuncture Vaccaria seeds)</div></div>
+    </div>
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Foundational · Software</span><span class="price">3 mo included</span></div>
+      <div class="item-name">NeuroSage Hub Access</div>
+      <div class="item-purpose">Right-brain video game library (Tunnel, Roll-A-Ball, Trash Dash, Hyperactive Cat) plus enhancement modes (Meditation). Hemispheric activation via gameplay.</div>
+      <div class="item-row"><div class="item-label">Included</div><div class="item-content">3 months at signup; subscription continues post-intensive</div></div>
+      <div class="item-row"><div class="item-label">Hardware</div><div class="item-content">Family-supplied: laptop or tablet, Xbox controller, wireless headphones, HDMI cable to TV</div></div>
+      <div class="item-row"><div class="item-label">Note</div><div class="item-content">ESA-funded tablet solution (see §6) may bundle hardware + Hub access for ESA-eligible families</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">neurosagehome.com/register</div></div>
+    </div>
+
+  </div>
+
+  <div class="warn-box">
+    <strong>Note on the older Saebo TENS unit ($350 retail).</strong> The existing equipment pricing doc lists a "Saebo Tens Unit" at $350 — this is a different model than the SaeboStim Pro 4-in-1 ($279 cost). The 4-in-1 is the new foundational selection. The older $350 model can either retire or remain available as an alternate. Pending Kyle's call.
+  </div>
+</section>
+
+<section class="section" id="labs">
+  <div class="section-tag">§3 · The Bloodwork</div>
+  <h1>Labs — what we're <span class="accent">looking for</span></h1>
+  <p class="lead">Six things behind every developmental challenge we treat. The lab panel reframes the test names into what parents actually want to know: what's driving their child's struggle. Two tiers of panel scope cover the six categories at different depths.</p>
+
+  <div class="core-idea">
+    <div class="core-idea-label">The six categories</div>
+    <h2>What labs are looking for, plain language.</h2>
+    <p>① <strong>Food allergies</strong> — hidden reactions driving inflammation and behavior flares. ② <strong>Hidden infections</strong> — parasites, candida, viruses, strep, bacteria. ③ <strong>Environmental toxins</strong> — heavy metals, plastics, PFAS, industrial chemicals. ④ <strong>Mold exposures</strong> — mycotoxins from water-damaged buildings or contaminated food. ⑤ <strong>Nutritional deficiencies</strong> — vitamins, minerals, antioxidants, amino acid metabolism. ⑥ <strong>Metabolic imbalance</strong> — mitochondrial energy production, neurotransmitter pathways, detox capacity.</p>
+    <p>Every paid tier includes labs. Universal labs cover four of six categories; full diagnostic covers all six. Profile assignment (per Profile + Intensity Map v0.2) determines which panel a case starts with.</p>
+  </div>
+
+  <h2>The two lab tiers</h2>
+
+  <div class="item-grid">
+
+    <div class="item-card foundational">
+      <div class="item-cat"><span>Universal labs</span><span class="price">~$1,000</span></div>
+      <div class="item-name">Stool + OAT</div>
+      <div class="item-purpose">Gut Zoomer (stool · 300+ markers) plus Organic Acids Test (urine · 76 markers). The baseline panel for every paid tier — surfaces gut-driven and metabolic drivers from day one.</div>
+      <div class="item-row"><div class="item-label">Covers</div><div class="item-content">① Food allergies · ② Hidden infections · ⑤ Nutritional deficiencies · ⑥ Metabolic imbalance</div></div>
+      <div class="item-row"><div class="item-label">Default for</div><div class="item-content">Profile A (pure neurodev) and Profile D (mild) cases — biomedical drivers are typically gut + metabolism only</div></div>
+      <div class="item-row"><div class="item-label">COGS</div><div class="item-content"><strong>~$1,000</strong> all-in cost basis to clinic</div></div>
+    </div>
+
+    <div class="item-card upgrade">
+      <div class="item-cat"><span>Full diagnostic</span><span class="price">~$2,300</span></div>
+      <div class="item-name">Comprehensive Panel</div>
+      <div class="item-purpose">Universal labs plus Total Tox Burden (urine · environmental + mold) and Neural Zoomer Plus (DBS · neuro-immune + deeper infection markers). Covers all six categories.</div>
+      <div class="item-row"><div class="item-label">Adds</div><div class="item-content">③ Environmental toxins · ④ Mold exposures (Total Tox) plus deeper neuro-immune profiling (Neural Zoomer Plus picks up PANS/PANDAS, autoimmune brain markers)</div></div>
+      <div class="item-row"><div class="item-label">Default for</div><div class="item-content">Profile B (complex multi-pathway), Profile C (mold-led regression), Profile E (acquired/hypoxic), Profile F (PANS/PANDAS)</div></div>
+      <div class="item-row"><div class="item-label">COGS</div><div class="item-content"><strong>~$2,300</strong> all-in cost basis to clinic</div></div>
+    </div>
+
+  </div>
+
+  <h2>Category × test mapping</h2>
+
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th style="width:240px">What we're looking for</th>
+        <th>Universal labs (Stool + OAT)</th>
+        <th>Adds in full diagnostic</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="profile-cell" style="border-left:3px solid var(--accent);color:var(--accent)"><strong>① Food allergies</strong><br/><span style="font-weight:400;color:var(--text-secondary)">Hidden reactions, inflammation, behavior flares</span></td>
+        <td>Gut Zoomer — gut barrier integrity, food-driven inflammation markers</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="profile-cell" style="border-left:3px solid var(--accent);color:var(--accent)"><strong>② Hidden infections</strong><br/><span style="font-weight:400;color:var(--text-secondary)">Parasites, candida, viruses, strep</span></td>
+        <td>Gut Zoomer — bacterial / fungal / parasite / viral DNA in stool</td>
+        <td>Neural Zoomer Plus adds bloodborne infection markers (EBV, HSV, Group A Strep, HHV)</td>
+      </tr>
+      <tr>
+        <td class="profile-cell" style="border-left:3px solid var(--accent);color:var(--accent)"><strong>③ Environmental toxins</strong><br/><span style="font-weight:400;color:var(--text-secondary)">Heavy metals, plastics, PFAS, industrial chemicals</span></td>
+        <td class="tbd-cell">Not covered</td>
+        <td><strong>Total Tox Burden</strong> — heavy metals, environmental chemicals, PFAS</td>
+      </tr>
+      <tr>
+        <td class="profile-cell" style="border-left:3px solid var(--accent);color:var(--accent)"><strong>④ Mold exposures</strong><br/><span style="font-weight:400;color:var(--text-secondary)">Mycotoxins from water damage, contaminated food</span></td>
+        <td class="tbd-cell">Not covered</td>
+        <td><strong>Total Tox Burden</strong> — mycotoxin section. Sinus Key swab on indication.</td>
+      </tr>
+      <tr>
+        <td class="profile-cell" style="border-left:3px solid var(--accent);color:var(--accent)"><strong>⑤ Nutritional deficiencies</strong><br/><span style="font-weight:400;color:var(--text-secondary)">Vitamins, minerals, amino acid metabolism</span></td>
+        <td>OAT — B-vitamin markers, antioxidants, amino acid metabolites</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td class="profile-cell" style="border-left:3px solid var(--accent);color:var(--accent)"><strong>⑥ Metabolic imbalance</strong><br/><span style="font-weight:400;color:var(--text-secondary)">Mitochondrial energy, neurotransmitter pathways, detox</span></td>
+        <td>OAT — Krebs cycle, mitochondrial markers, neurotransmitter metabolites, detox indicators</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Why labs are universal across paid tiers.</strong> The Profile + Intensity Map (v0.2) showed cohort cases consistently had biomedical drivers behind the neurological presentation. Treating the brain without checking the gut, the toxin load, or the metabolic markers misses the upstream cause in most cases. Labs aren't a tier-graded extra — they're a clinical prerequisite. The tier difference is panel <em>scope</em> (universal vs. full), not labs vs. no-labs.
+  </div>
+</section>
+
+<section class="section" id="addons">
+  <div class="section-tag">§4 · The Library</div>
+  <h1>Clinician-prescribed <span class="accent">add-ons</span></h1>
+  <p class="lead">Add-ons are pulled from a defined library when the case calls for them. The clinician prescribes; the family acquires; the device is layered onto the foundational protocol. Six items in active rotation, plus the affiliate-sourced items families can buy directly.</p>
+
+  <div class="info-box">
+    <strong>How add-ons get assigned.</strong> Add-on selection follows from profile (§4) and intensity (Profile + Intensity Map v0.2). A Profile A child running HIGH intensity gets the heaviest add-on stack; a Profile D child running LIGHT typically gets none. The clinician makes the call after the initial assessment and articulates it in the homecare prescription.
+  </div>
+
+  <div class="item-grid">
+
+    <div class="item-card addon">
+      <div class="item-cat"><span>Add-on · Vagus / Cranial Nerve</span><span class="price">$4,900</span></div>
+      <div class="item-name">Stimpod NMS460</div>
+      <div class="item-purpose">Heavy-duty pulsed RF + electrical stim. Used on tongue (left/middle/right), cymba concha (vagus), face for trigeminal and rooting reflex work. Pen + pad placements.</div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Profile A heavy reflex burden, Profile B full add-on stack, profound tongue/face weakness, advanced PNS work</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">Order through clinic</div></div>
+    </div>
+
+    <div class="item-card addon">
+      <div class="item-cat"><span>Add-on · tCDS</span><span class="price">$225 + $30 cap</span></div>
+      <div class="item-name">Brain Driver (Fischer Wallace)</div>
+      <div class="item-purpose">Transcranial direct current stim. Cerebellum L/R placements (red lead behind L ear, black behind R ear, 1 mA × 20 min). Speech protocol uses temple + above-ear placements.</div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Cerebellar work, speech protocols, hemispheric balance work in higher-intensity cases</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">caputron.com (electrode placement cap sold separately)</div></div>
+    </div>
+
+    <div class="item-card addon">
+      <div class="item-cat"><span>Add-on · Vibration</span><span class="price">~$200 retail</span></div>
+      <div class="item-name">Hyperice Venom Back</div>
+      <div class="item-purpose">Vibration + heat belt for Spinal Galant work and paraspinal vibration during reflex integration exercises. Cited as "Dr. Daigle ALL" placement reference in the cohort.</div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Profile A retained Spinal Galant, paraspinal sensory work, vibration-driven reflex integration</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">hyperice.com (parent self-sources)</div></div>
+    </div>
+
+    <div class="item-card addon">
+      <div class="item-cat"><span>Add-on · PEMF</span><span class="price">~$300–500</span></div>
+      <div class="item-name">Neorhythm PEMF Headband</div>
+      <div class="item-purpose">PEMF over forehead / motor strip / back of head. Settings: theta, energy/vitality, deep relaxation, improve pain. Also has a mat variant.</div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Profile B/C inflammation work, sleep regulation, autonomic dysregulation, pain modulation</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">omnipemf.com</div></div>
+    </div>
+
+    <div class="item-card addon">
+      <div class="item-cat"><span>Add-on · Photobiomodulation</span><span class="price">varies</span></div>
+      <div class="item-name">Red Light Torch / Power Panel</div>
+      <div class="item-purpose">Targeted red light therapy. Complements the foundational LED light panel for site-specific work and circadian/sensory protocols.</div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Sleep regulation, additional photobiomodulation dosing in Profile B/C cases</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">blockbluelight.com (Kyle's affiliate)</div></div>
+    </div>
+
+    <div class="item-card addon">
+      <div class="item-cat"><span>Add-on · Vagus Stim</span><span class="price">varies</span></div>
+      <div class="item-name">Hoolest VeRelief</div>
+      <div class="item-purpose">Auricular vagus stim wearable. Alternative or complement to Rezzimax for sustained vagal tone work between sessions.</div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Profile F PANS/PANDAS active flare windows, autonomic-heavy presentations, sustained vagal regulation needs</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">hoolest.com/kyle10267169 (Kyle's affiliate)</div></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="matrix">
+  <div class="section-tag">§5 · The Cross-cut</div>
+  <h1>Profile × kit <span class="accent">prescription map</span></h1>
+  <p class="lead">Six profiles, three kit layers. The foundational kit is constant; the add-on column shows the typical clinician prescription pattern from the cohort data; the upgrade column shows when Class 3B or qEEG is most indicated.</p>
+
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th style="width:140px">Profile</th>
+        <th>Foundational Kit</th>
+        <th>Typical Add-ons</th>
+        <th>Upgrade Signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="profile-cell A"><strong>A</strong><br/>Pure Neurodev</td>
+        <td>Full universal kit</td>
+        <td>Stimpod (heavy face/tongue), Brain Driver (cerebellum), Hyperice (Spinal Galant), Neorhythm if sleep dysregulation</td>
+        <td>Class 3B if HIGH intensity protocol plateaus on LED Laser NSH after 6–8 weeks</td>
+      </tr>
+      <tr>
+        <td class="profile-cell B"><strong>B</strong><br/>Complex Multi-Pathway</td>
+        <td>Full universal kit</td>
+        <td>Full add-on stack: Stimpod, Brain Driver, Hyperice, Neorhythm PEMF, Red light panel</td>
+        <td>Class 3B common; qEEG to localize secondary drivers when biomedical correction stalls neurological progression</td>
+      </tr>
+      <tr>
+        <td class="profile-cell C"><strong>C</strong><br/>Regressive — Mold-Led</td>
+        <td>Full universal kit</td>
+        <td>Lighter device add-ons (Neorhythm PEMF for inflammation, Red light). Heavier biomedical layer (Dr. Jared protocol — separate from kit)</td>
+        <td>Class 3B less common (biomedical lift is the constraint, not laser dose). qEEG only if neurological lag persists post-detox</td>
+      </tr>
+      <tr>
+        <td class="profile-cell D"><strong>D</strong><br/>Mild / Hemispheric</td>
+        <td>Full universal kit</td>
+        <td>Often <strong>none</strong>. Foundational kit alone is typically sufficient for the modal D case. Brain Driver only if cerebellar deficit prominent.</td>
+        <td>Rare. D cases graduate to Continuing Care before upgrade signals appear.</td>
+      </tr>
+      <tr>
+        <td class="profile-cell E"><strong>E</strong><br/>Acquired / Hypoxic</td>
+        <td>Full universal kit</td>
+        <td class="tbd-cell">TBD by Kyle — likely targeted Stimpod and Brain Driver placements per qEEG findings</td>
+        <td><strong>qEEG is foundational to Profile E intake</strong>. Class 3B frequently indicated for targeted regional rebuilding.</td>
+      </tr>
+      <tr>
+        <td class="profile-cell F"><strong>F</strong><br/>PANS / PANDAS</td>
+        <td>Full universal kit</td>
+        <td>Hoolest (sustained vagus during flares), Neorhythm PEMF (anti-inflammatory). Antimicrobial protocol via Dr. Jared (separate from kit).</td>
+        <td>Class 3B and qEEG only after acute inflammation drops. Premature upgrade can drive flare.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <strong>Profiles E and F entries are placeholders.</strong> These profiles aren't in the 23-case cohort — Kyle confirmed them on May 2 but we don't yet have prescription patterns to validate the add-on and upgrade columns above. These rows need Kyle's case examples to populate properly. Marked clearly so they don't ossify into clinical guidance prematurely.
+  </div>
+</section>
+
+<section class="section" id="upgrades">
+  <div class="section-tag">§6 · The Premium Layer</div>
+  <h1>Premium <span class="accent">upgrades</span></h1>
+  <p class="lead">Three upgrade offerings. All available as add-ons at any tier (Foundation, Accelerated, Immersive). Class 3B and qEEG require explicit parent training and documented certification before deployment. Rezzimax is a non-certified optional upgrade — added if a family wants the additional vagal/vibration tooling beyond what the foundational kit delivers via Saebo + LED Laser NSH.</p>
+
+  <div class="item-grid">
+
+    <div class="item-card upgrade">
+      <div class="item-cat"><span>Upgrade · Class 3B Laser</span><span class="price">$8,360</span></div>
+      <div class="item-name">Class 3B Medical Laser <span class="item-flag new">Now an upgrade</span></div>
+      <div class="item-purpose">The clinical-grade laser that was historically the foundational anchor. Significantly higher dosing capacity than the LED Laser NSH; required for some Profile A HIGH and Profile B/E protocols where targeted regional output matters.</div>
+      <div class="item-row"><div class="item-label">Laser</div><div class="item-content"><strong>$8,000</strong></div></div>
+      <div class="item-row"><div class="item-label">Stand</div><div class="item-content"><strong>$250</strong></div></div>
+      <div class="item-row"><div class="item-label">Probe</div><div class="item-content"><strong>$110</strong></div></div>
+      <div class="item-row"><div class="item-label">Total</div><div class="item-content"><strong>$8,360</strong> + parent certification module</div></div>
+      <div class="item-row"><div class="item-label">Cert</div><div class="item-content">Parent must complete certification module before unit ships. Pending Kyle's call on cert format and completion criteria.</div></div>
+      <div class="item-row"><div class="item-label">Available</div><div class="item-content">Add-on at any tier (per May 2 review confirmed in this build)</div></div>
+    </div>
+
+    <div class="item-card upgrade">
+      <div class="item-cat"><span>Upgrade · qEEG</span><span class="price">TBD lease</span></div>
+      <div class="item-name">qEEG Brain Scan Lease <span class="item-flag tbd">Pricing TBD</span></div>
+      <div class="item-purpose">In-home qEEG capture for objective brain mapping. Foundational for Profile E (acquired/hypoxic) where targeted regional rebuilding requires localization. Adds to data layer for Profile B and Profile C re-baselining.</div>
+      <div class="item-row"><div class="item-label">Pricing</div><div class="item-content"><span class="cell-tbd">Lease structure and cost TBD with Kyle</span></div></div>
+      <div class="item-row"><div class="item-label">Cadence</div><div class="item-content">Baseline at intensive start, re-scan at week 6 and week 12 (proposed — Kyle to confirm)</div></div>
+      <div class="item-row"><div class="item-label">Cert</div><div class="item-content">Parent training on capture protocol; data review by Kyle / Dr. Jared</div></div>
+      <div class="item-row"><div class="item-label">Available</div><div class="item-content">Add-on at any tier; default for Profile E intake</div></div>
+    </div>
+
+    <div class="item-card upgrade">
+      <div class="item-cat"><span>Upgrade · Vagus / Vibration · No-cert</span><span class="price">$700 reference</span></div>
+      <div class="item-name">Rezzimax <span class="item-flag new">Moved out of foundational</span></div>
+      <div class="item-purpose">Vagus nerve stimulation via the cymba concha plus targeted vibration delivery (face ear-to-lip, hands, feet, paraspinal). Was foundational in the cohort era; now an optional upgrade since SaeboStim Pro 4-in-1 covers most of the universal vagus and face stim use cases.</div>
+      <div class="item-row"><div class="item-label">Pricing</div><div class="item-content"><strong>$700</strong> reference retail. Bundle / upgrade pricing set in pricing tier rework.</div></div>
+      <div class="item-row"><div class="item-label">Cert</div><div class="item-content">None required. Parent-friendly device.</div></div>
+      <div class="item-row"><div class="item-label">Triggers</div><div class="item-content">Family wants the additional vagus/vibration tooling; clinician judges Saebo coverage insufficient for the case; or used as the parent's preferred handheld vagus device alongside Saebo placements.</div></div>
+      <div class="item-row"><div class="item-label">Source</div><div class="item-content">In-clinic order</div></div>
+    </div>
+
+  </div>
+</section>
+
+
+</main>
+
+</div>
+
+</body>
+</html>
