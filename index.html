@@ -253,6 +253,85 @@ body {
 .state-content { display: flex; flex-direction: column; flex-grow: 1; }
 #laser-card { display: flex; flex-direction: column; }
 
+/* KIT MODE TOGGLE (Home Intensive vs Pre-Intensive) */
+.kit-mode-bar {
+  max-width: 720px;
+  margin: 24px auto 8px;
+  padding: 0 24px;
+}
+.kit-mode-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.kit-mode-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid var(--border);
+}
+.kit-toggle-btn {
+  flex: 1;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.kit-toggle-btn .kit-toggle-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.kit-toggle-btn.active {
+  background: var(--bg);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.kit-toggle-btn.active .kit-toggle-sub { color: var(--accent); opacity: 0.7; }
+.kit-toggle-btn:hover:not(.active) { color: var(--text-secondary); }
+
+/* Home-Intensive-only card treatment (Pre-Intensive mode) */
+.kit-badge {
+  display: none;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  background: var(--gold);
+  color: #fff;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.item-card { position: relative; }
+body[data-kit="pre"] .home-only {
+  opacity: 0.55;
+  border-style: dashed;
+}
+body[data-kit="pre"] .home-only .kit-badge { display: inline-block; }
+
 /* LABS */
 .lab-card {
   background: var(--bg-card);
@@ -353,15 +432,30 @@ body {
 <!-- TOPNAV -->
 <nav class="topnav">
   <div class="topnav-brand">Neuro<span>Home</span></div>
-  <div class="topnav-meta">Kit Composition · Internal · v0.11 (May 16, 2026)</div>
+  <div class="topnav-meta">Kit Composition · Internal · v0.12 (May 16, 2026 — AdrenaCalm added, Pre-Intensive remedial kit variant)</div>
 </nav>
 
 <!-- HERO -->
 <header class="hero">
   <div class="hero-mark">The Box Every Family Gets</div>
   <h1 class="hero-title">The <em>kit</em>.</h1>
-  <p class="hero-sub">Ten devices, three supplements, four labs. Universal across every paid tier. Each item below links directly to where it can be purchased.</p>
+  <p class="hero-sub">Two kit variants: <strong>Home Intensive</strong> (full stack, 10 devices) and <strong>Pre-Intensive</strong> (8 devices, remedial path for families not yet ready for neuromuscular estim or weekly outcome tracking). Four supplements and four labs universal across both. Toggle below to switch the view; cards highlighted in <span style="color:var(--gold);font-weight:600">gold</span> are Home Intensive only.</p>
 </header>
+
+<!-- KIT MODE TOGGLE -->
+<div class="kit-mode-bar">
+  <div class="kit-mode-label">Showing kit · click to switch</div>
+  <div class="kit-mode-toggle" role="tablist">
+    <button type="button" class="kit-toggle-btn active" data-kit="home" role="tab">
+      Home Intensive
+      <span class="kit-toggle-sub">10 devices · full stack</span>
+    </button>
+    <button type="button" class="kit-toggle-btn" data-kit="pre" role="tab">
+      Pre-Intensive
+      <span class="kit-toggle-sub">8 devices · remedial path</span>
+    </button>
+  </div>
+</div>
 
 <!-- FOUNDATIONAL DEVICES -->
 <section class="section">
@@ -414,7 +508,8 @@ body {
       <div class="buy-source">Source TBC · ordered through clinic channel</div>
     </div>
 
-    <div class="item-card">
+    <div class="item-card home-only">
+      <span class="kit-badge">Home Intensive only</span>
       <div class="item-cat">Neuromuscular Estim</div>
       <div class="item-name">SaeboStim Pro 4-in-1</div>
       <div class="item-purpose">Universal in cohort prescriptions — face, tongue, paraspinal, ST36/SP6 acupressure, trigeminal/vagus placements. NMES + TENS + FES + SES in one device.</div>
@@ -468,7 +563,8 @@ body {
       <div class="buy-source">Family hardware required: laptop or tablet, Xbox controller, wireless headphones, HDMI to TV</div>
     </div>
 
-    <div class="item-card">
+    <div class="item-card home-only">
+      <span class="kit-badge">Home Intensive only</span>
       <div class="item-cat">Outcome Tracking · fNIRS</div>
       <div class="item-name">Mendi Headband</div>
       <div class="item-purpose">Consumer-grade fNIRS headband. Measures prefrontal cortex blood flow / oxygenation during a 3-minute focus game. Used weekly as the objective neurological-improvement instrument — bridging baseline ATEC and Wk-12 re-score with a measurable, family-visible weekly score. Concierge logs Wk-1 / Wk-6 / Wk-12 deltas in the Hub. Supplements (does not replace) ATEC.</div>
@@ -484,8 +580,8 @@ body {
 <!-- SUPPLEMENTS -->
 <section class="section">
   <div class="section-tag">§2 · 3-Month Supplement Supply</div>
-  <h2 class="section-title">Three <em>supplements</em>.</h2>
-  <p class="section-lead">Same composition for every profile. These seed the gut-brain axis from day one while labs are processing. Bundled into kit price.</p>
+  <h2 class="section-title">Four <em>supplements</em>.</h2>
+  <p class="section-lead">Same composition for every profile and across both kit variants. These seed the gut-brain axis and regulate the stress response from day one while labs are processing. Bundled into kit price.</p>
 
   <div class="item-grid">
 
@@ -511,20 +607,29 @@ body {
       <div class="item-cat">Mitochondrial · Cellular</div>
       <div class="item-name">benaGene Lozenges</div>
       <div class="item-purpose">Thermally-stabilized oxaloacetate. Krebs-cycle intermediate that supports mitochondrial energy production, NAD+ recycling, and cellular metabolic resilience — relevant where OAT panels return mitochondrial markers. Lozenge format for pediatric compliance.</div>
-      <div class="item-price"><strong>$90 for the 12-week intensive</strong><small>3 servings × $30/serving</small></div>
+      <div class="item-price"><strong>$90 per 3-month supply</strong><small>1 lozenge/day · 3 bottles × $30/bottle</small></div>
       <a href="https://benagene.com/" target="_blank" rel="noopener" class="buy-button">Shop at benaGene <span class="buy-button-arrow">→</span></a>
-      <div class="buy-source">Lozenge format · 3 servings dispensed across the 12-week intensive</div>
+      <div class="buy-source">Lozenge format · 1 lozenge/day · 3-month supply (3 bottles)</div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-cat">HPA-axis · Topical</div>
+      <div class="item-name">AdrenaCalm</div>
+      <div class="item-purpose">Topical adrenal-support cream by Apex Energetics. Applied to the stomach for transdermal absorption (~26 seconds to bloodstream) — modulates the HPA-axis stress response and helps regulate cortisol surges. Used in cohort cases to break the wired-and-tired loop in dysregulated kids; especially valuable in the Pre-Intensive phase where sensory regulation alone isn't enough.</div>
+      <div class="item-price"><strong>$195 per 3-month supply</strong><small>1 pump/day · 3 bottles × $65/bottle</small></div>
+      <a href="https://www.apexenergetics.com/" target="_blank" rel="noopener" class="buy-button">Shop at Apex Energetics <span class="buy-button-arrow">→</span></a>
+      <div class="buy-source">Practitioner channel · SE (sensitive) variant available for reactive kids</div>
     </div>
 
   </div>
 
   <div class="totals">
     <div>
-      <div class="totals-num" data-pilot="~$1,688" data-production="~$1,843">~$1,688</div>
-      <div class="totals-label">Total Kit COGS · <span class="state-label">pilot</span></div>
+      <div class="totals-num" data-home-pilot="~$1,883" data-home-production="~$2,038" data-pre-pilot="~$1,454" data-pre-production="~$1,609">~$1,883</div>
+      <div class="totals-label">Total Kit COGS · <span class="kit-label">Home Intensive</span> · <span class="state-label">pilot</span></div>
     </div>
     <div class="totals-detail">
-      <strong><span data-pilot="$1,223" data-production="$1,378">$1,223</span></strong> hardware (9 items with cost) + <strong>$465</strong> supplements + Hub access (proprietary, no marginal cost) = <strong><span data-pilot="$1,688" data-production="$1,843">$1,688</span></strong> per family
+      <strong><span data-home-pilot="$1,223" data-home-production="$1,378" data-pre-pilot="$794" data-pre-production="$949">$1,223</span></strong> hardware (<span class="item-count" data-home-text="9 items with cost" data-pre-text="7 items with cost">9 items with cost</span>) + <strong>$660</strong> supplements + Hub access (proprietary, no marginal cost) = <strong><span data-home-pilot="$1,883" data-home-production="$2,038" data-pre-pilot="$1,454" data-pre-production="$1,609">$1,883</span></strong> per family
     </div>
   </div>
 
@@ -618,24 +723,67 @@ body {
 
 <script>
 (function() {
-  const toggle = (state) => {
+  let kitMode = 'home';   // 'home' | 'pre'
+  let kitState = 'pilot'; // 'pilot' | 'production'
+
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  const updateAll = () => {
+    // Pilot/post-patent local toggle inside the laser card
     document.querySelectorAll('.toggle-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.state === state);
+      btn.classList.toggle('active', btn.dataset.state === kitState);
     });
     document.querySelectorAll('.state-content').forEach(content => {
-      content.hidden = content.dataset.state !== state;
+      content.hidden = content.dataset.state !== kitState;
     });
+
+    // Kit-mode toggle buttons
+    document.querySelectorAll('.kit-toggle-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.kit === kitMode);
+    });
+    document.body.setAttribute('data-kit', kitMode);
+
+    // Two-state spans (pilot/production only — used in laser cards, individual prices, etc.)
     document.querySelectorAll('[data-pilot][data-production]').forEach(el => {
-      el.textContent = el.dataset[state];
+      el.textContent = el.dataset[kitState];
     });
+
+    // Four-state spans (kit-mode × state — used in totals)
+    const combinedKey = kitMode + cap(kitState); // e.g. "homePilot", "preProduction"
+    document.querySelectorAll('[data-home-pilot]').forEach(el => {
+      if (el.dataset[combinedKey]) el.textContent = el.dataset[combinedKey];
+    });
+
+    // Kit-mode-only text variants (e.g. "9 items with cost" vs "7 items")
+    document.querySelectorAll('[data-home-text][data-pre-text]').forEach(el => {
+      el.textContent = el.dataset[kitMode + 'Text'];
+    });
+
+    // Inline labels
     document.querySelectorAll('.state-label').forEach(el => {
-      el.textContent = state === 'pilot' ? 'pilot' : 'post-patent';
+      el.textContent = kitState === 'pilot' ? 'pilot' : 'post-patent';
+    });
+    document.querySelectorAll('.kit-label').forEach(el => {
+      el.textContent = kitMode === 'home' ? 'Home Intensive' : 'Pre-Intensive';
     });
   };
+
   document.addEventListener('click', e => {
-    const btn = e.target.closest('.toggle-btn');
-    if (btn) toggle(btn.dataset.state);
+    const stateBtn = e.target.closest('.toggle-btn');
+    if (stateBtn && stateBtn.dataset.state) {
+      kitState = stateBtn.dataset.state;
+      updateAll();
+      return;
+    }
+    const kitBtn = e.target.closest('.kit-toggle-btn');
+    if (kitBtn && kitBtn.dataset.kit) {
+      kitMode = kitBtn.dataset.kit;
+      updateAll();
+    }
   });
+
+  // Initialize on load
+  updateAll();
 })();
 </script>
 
